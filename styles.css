@@ -81,6 +81,104 @@ h2 em, h1 em {
   max-width: 100%;
 }
 
+/* ========================== BANNER ========================= */
+
+.banner {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 60;
+  background: rgba(20, 17, 15, 0.78);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border-bottom: 1px solid rgba(200, 155, 91, 0.22);
+  transform: translateY(-100%);
+  opacity: 0;
+  transition: transform .7s var(--ease-out), opacity .5s var(--ease-out);
+  will-change: transform, opacity;
+}
+.banner[hidden] { display: none; }
+.banner.is-visible {
+  transform: translateY(0);
+  opacity: 1;
+}
+.banner.is-leaving {
+  transform: translateY(-100%);
+  opacity: 0;
+}
+
+.banner__inner {
+  max-width: 1500px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: .7rem var(--pad-x);
+}
+
+.banner__icon {
+  display: inline-grid;
+  place-items: center;
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: rgba(200, 155, 91, 0.15);
+  color: var(--accent-2);
+  flex-shrink: 0;
+}
+
+.banner__text {
+  flex: 1;
+  margin: 0;
+  font-size: .9rem;
+  color: var(--ink);
+  letter-spacing: 0.01em;
+  line-height: 1.45;
+}
+.banner__text strong {
+  font-weight: 500;
+  color: var(--ink);
+  margin-right: .25rem;
+}
+.banner__text em {
+  font-style: normal;
+  color: var(--accent-2);
+  font-family: var(--serif);
+}
+.banner__link {
+  margin-left: .6rem;
+  color: var(--accent-2);
+  border-bottom: 1px solid rgba(231, 196, 138, 0.35);
+  padding-bottom: 1px;
+  transition: border-color .25s var(--ease);
+  white-space: nowrap;
+}
+.banner__link:hover { border-bottom-color: var(--accent-2); }
+
+.banner__close {
+  background: transparent;
+  border: 0;
+  color: var(--ink-dim);
+  width: 32px; height: 32px;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: color .25s var(--ease), background .25s var(--ease);
+}
+.banner__close:hover {
+  color: var(--ink);
+  background: rgba(244, 237, 226, 0.08);
+}
+
+/* Push the nav down while banner is visible */
+body.has-banner .nav { top: var(--banner-h, 48px); }
+.nav { transition: top .7s var(--ease-out), background-color .4s var(--ease), padding .4s var(--ease), border-color .4s var(--ease); }
+
+@media (max-width: 640px) {
+  .banner__inner { gap: .5rem; padding: .6rem var(--pad-x); }
+  .banner__text { font-size: .82rem; }
+  .banner__link { display: inline-block; margin-left: .3rem; }
+}
+
 /* ========================== NAV ============================ */
 
 .nav {

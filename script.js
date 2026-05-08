@@ -4,6 +4,41 @@
   const $ = (sel, ctx = document) => ctx.querySelector(sel);
   const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
 
+  /* ---------- Info banner ---------- */
+  const banner = $("#banner");
+  const bannerClose = $("#banner-close");
+  const BANNER_KEY = "manus_banner_dismissed_v1";
+  if (banner && bannerClose) {
+    const dismissed = (() => {
+      try { return sessionStorage.getItem(BANNER_KEY) === "1"; }
+      catch { return false; }
+    })();
+
+    if (!dismissed) {
+      banner.hidden = false;
+      // Reserve nav offset variable based on actual height
+      requestAnimationFrame(() => {
+        const h = banner.offsetHeight;
+        document.documentElement.style.setProperty("--banner-h", h + "px");
+        document.body.classList.add("has-banner");
+        // Slide in slightly delayed so it doesn't compete with the hero animation
+        setTimeout(() => banner.classList.add("is-visible"), 700);
+      });
+    }
+
+    const dismiss = () => {
+      banner.classList.add("is-leaving");
+      banner.classList.remove("is-visible");
+      document.body.classList.remove("has-banner");
+      try { sessionStorage.setItem(BANNER_KEY, "1"); } catch {}
+      setTimeout(() => { banner.hidden = true; }, 700);
+    };
+    bannerClose.addEventListener("click", dismiss);
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && banner.classList.contains("is-visible")) dismiss();
+    });
+  }
+
   /* ---------- Year ---------- */
   const yr = $("#year");
   if (yr) yr.textContent = new Date().getFullYear();
