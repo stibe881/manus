@@ -39,6 +39,31 @@
     });
   }
 
+  /* ---------- Cookie notice ---------- */
+  const cookie = $("#cookie");
+  const cookieAccept = $("#cookie-accept");
+  const cookieDecline = $("#cookie-decline");
+  const COOKIE_KEY = "manus_cookie_choice_v1";
+  if (cookie && cookieAccept && cookieDecline) {
+    let stored = null;
+    try { stored = localStorage.getItem(COOKIE_KEY); } catch {}
+
+    if (!stored) {
+      cookie.hidden = false;
+      // Delay so it doesn't compete with banner / hero
+      setTimeout(() => cookie.classList.add("is-visible"), 1400);
+    }
+
+    const close = (choice) => {
+      cookie.classList.remove("is-visible");
+      cookie.classList.add("is-leaving");
+      try { localStorage.setItem(COOKIE_KEY, choice); } catch {}
+      setTimeout(() => { cookie.hidden = true; }, 700);
+    };
+    cookieAccept.addEventListener("click", () => close("accepted"));
+    cookieDecline.addEventListener("click", () => close("declined"));
+  }
+
   /* ---------- Year ---------- */
   const yr = $("#year");
   if (yr) yr.textContent = new Date().getFullYear();
